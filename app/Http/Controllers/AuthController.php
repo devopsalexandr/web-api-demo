@@ -7,6 +7,10 @@ use App\Http\Requests\LoginFromRequest;
 use App\Http\Requests\RegisterFormRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 
@@ -48,5 +52,11 @@ class AuthController extends Controller
                 'token' => $token
             ]
         ]);
+    }
+
+    public function logout(Request $request, ResponseFactory $factory)
+    {
+        $request->user()->tokens()->delete();
+        return $factory->make("", 200);
     }
 }

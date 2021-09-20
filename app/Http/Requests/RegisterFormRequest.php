@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use PhpParser\Node\Expr\Array_;
 
 class RegisterFormRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class RegisterFormRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +23,13 @@ class RegisterFormRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            "email" => "required|email|unique:users,email",
+            "first_name" => "required",
+            "last_name" => "required",
+            "password" => "required|string"
         ];
     }
 }

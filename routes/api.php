@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/test', [\App\Http\Controllers\AuthController::class, "index"]);
 
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

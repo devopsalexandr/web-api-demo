@@ -12,6 +12,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::post('/user', [\App\Http\Controllers\AdminController::class, 'addUser']);
         Route::patch('/user', [\App\Http\Controllers\AdminController::class, 'updateUser']);
+        Route::delete('/user', [\App\Http\Controllers\AdminController::class, 'removeUser']);
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function(){

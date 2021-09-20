@@ -37,4 +37,13 @@ class UserService implements IUserService
     {
         return $this->user->where('id', $id)->first();
     }
+
+    public function deleteUserById(int $id): ?bool
+    {
+        $user = $this->findUserById($id);
+
+        return $user->delete();
+    }
+
+
 }

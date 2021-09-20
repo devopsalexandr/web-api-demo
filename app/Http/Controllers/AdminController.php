@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AdminController extends Controller
@@ -45,9 +46,19 @@ class AdminController extends Controller
         return $this->responseFactory->json(null, 201);
     }
 
-    public function removeUser()
+    public function removeUser(Request $request)
     {
-        // notify user by sms
+        $validated = $request->validate(['user_id' => ['required']]);
+
+        $deleted = $this->userService->deleteUserById((int) $validated["user_id"]);
+
+        if($deleted){
+            // notify user by sms
+            //$this->smsService->sendSms("phone number", $text)
+            return $this->responseFactory->json(null, 200);
+        }
+
+        return $this->responseFactory->json("Sorry but we can't delete this item", 400);
     }
 
     public function addBook()

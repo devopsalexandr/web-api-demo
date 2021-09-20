@@ -7,7 +7,10 @@ namespace App\Http\Controllers;
 use App\Contracts\IUserService;
 use App\Http\Requests\Admin\AdminCreateUserRequest;
 use App\Http\Requests\Admin\AdminUpdateUserRequest;
+use App\Http\Requests\AdminAddBookRequest;
+use App\Http\Resources\BookResource;
 use App\Http\Resources\UserResource;
+use App\Models\Book;
 use App\Models\User;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -46,7 +49,7 @@ class AdminController extends Controller
         return $this->responseFactory->json(null, 201);
     }
 
-    public function removeUser(Request $request)
+    public function removeUser(Request $request): JsonResponse
     {
         $validated = $request->validate(['user_id' => ['required']]);
 
@@ -61,9 +64,15 @@ class AdminController extends Controller
         return $this->responseFactory->json("Sorry but we can't delete this item", 400);
     }
 
-    public function addBook()
+    public function addBook(AdminAddBookRequest $request)
     {
-        //
+        $book = Book::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'shortDescription' => $request->shortDescription
+        ]);
+
+        return $this->responseFactory->json(new BookResource($book), 201);
     }
 
     public function updateBook()

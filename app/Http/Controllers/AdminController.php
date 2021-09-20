@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 
+use App\Contracts\IBookService;
 use App\Contracts\IUserService;
 use App\Http\Requests\Admin\AdminCreateUserRequest;
 use App\Http\Requests\Admin\AdminUpdateUserRequest;
@@ -21,11 +22,14 @@ class AdminController extends Controller
 {
     private ?IUserService $userService;
 
+    private ?IBookService $bookService;
+
     private ResponseFactory $responseFactory;
 
-    public function __construct(IUserService $usr, ResponseFactory $factory)
+    public function __construct(IUserService $usr, IBookService $booksrv, ResponseFactory $factory)
     {
         $this->userService = $usr;
+        $this->bookService = $booksrv;
         $this->responseFactory = $factory;
     }
 
@@ -79,10 +83,15 @@ class AdminController extends Controller
     {
         //
     }
-    public function deleteBook()
+
+    public function deleteBook(Request $request): JsonResponse
     {
-        //
+        $validated = $request->validate(['book_id' => ['required']]);
+
+        $deleted = $this->bookService->deleteBookById((int) $validated["book_id"]);
+
+        return ($deleted)
+            ? $this->responseFactory->json(null, 200)
+            : $this->responseFactory->json("Sorry but we can't delete this item", 400);
     }
-
-
 }

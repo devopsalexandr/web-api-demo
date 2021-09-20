@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Contracts\IBookService;
 use App\Contracts\IUserService;
+use App\Models\Book;
 use App\Models\User;
+use App\Services\BookService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IUserService::class, function ($app) {
             return new UserService($app->make(User::class));
+        });
+
+        $this->app->bind(IBookService::class, function ($app) {
+            return new BookService($app->make(Book::class));
         });
     }
 

@@ -11,6 +11,7 @@ Route::prefix('v1')->group(function () {
     // Admin
     Route::prefix('admin')->group(function () {
         Route::post('/user', [\App\Http\Controllers\AdminController::class, 'addUser']);
+        Route::patch('/user', [\App\Http\Controllers\AdminController::class, 'updateUser']);
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function(){

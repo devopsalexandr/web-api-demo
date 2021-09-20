@@ -23,7 +23,7 @@ class AuthController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'slug' => mb_strtolower($request->first_name."-".$request->last_name)
         ]);
 

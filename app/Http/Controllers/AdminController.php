@@ -5,33 +5,46 @@ namespace App\Http\Controllers;
 
 
 use App\Contracts\IUserService;
-use App\Http\Requests\AdminCreateUserRequest;
+use App\Http\Requests\Admin\AdminCreateUserRequest;
+use App\Http\Requests\Admin\AdminUpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class AdminController extends Controller
 {
     private ?IUserService $userService;
 
-    public function __construct(IUserService $usr)
+    private ResponseFactory $responseFactory;
+
+    public function __construct(IUserService $usr, ResponseFactory $factory)
     {
         $this->userService = $usr;
+        $this->responseFactory = $factory;
     }
 
-    public function addUser(AdminCreateUserRequest $request): User
+    public function addUser(AdminCreateUserRequest $request): JsonResponse
     {
-        return User::create([
+        $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'slug' => mb_strtolower($request->first_name."-".$request->last_name)
         ]);
+
+        return $this->responseFactory->json(new UserResource($user), 201);
     }
 
-    public function updateUser()
+    public function updateUser(AdminUpdateUserRequest $request): JsonResponse
     {
-        //
+        $this->userService->updateUserById((int) $request->user_id, $request->all());
+
+        return $this->responseFactory->json(null, 201);
     }
+
     public function removeUser()
     {
         // notify user by sms

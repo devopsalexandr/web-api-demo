@@ -21,5 +21,6 @@ Route::prefix('v1')->group(function () {
 
     Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+        Route::get('/books', [\App\Http\Controllers\UserBooksController::class, 'index']);
     });
 });

@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Contracts\IUserService;
+use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(IUserService::class, function ($app) {
+            return new UserService($app->make(User::class));
+        });
     }
 
     /**

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 
 use App\Contracts\IUserService;
+use App\Http\Requests\AdminCreateUserRequest;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -15,9 +17,15 @@ class AdminController extends Controller
         $this->userService = $usr;
     }
 
-    public function addUser()
+    public function addUser(AdminCreateUserRequest $request): User
     {
-        //
+        return User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'slug' => mb_strtolower($request->first_name."-".$request->last_name)
+        ]);
     }
 
     public function updateUser()

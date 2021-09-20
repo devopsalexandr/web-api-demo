@@ -97,4 +97,18 @@ class AdminController extends Controller
             ? $this->responseFactory->json(null, 200)
             : $this->responseFactory->json("Sorry but we can't delete this item", 400);
     }
+
+    public function addBookToUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => ['required'],
+            'books_ids' => ['required', 'array']
+        ]);
+
+        $this->userService->addBooksToUser((int)$request->user_id, $request->books_ids);
+
+        return $this->responseFactory->json([
+            "message" => "Attached"
+        ]);
+    }
 }

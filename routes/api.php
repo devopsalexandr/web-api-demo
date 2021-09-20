@@ -17,6 +17,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/book', [\App\Http\Controllers\AdminController::class, 'addBook']);
         Route::delete('/book', [\App\Http\Controllers\AdminController::class, 'deleteBook']);
         Route::patch('/book', [\App\Http\Controllers\AdminController::class, 'updateBook']);
+        Route::post('/book/assign', [\App\Http\Controllers\AdminController::class, 'addBookToUser']);
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function(){

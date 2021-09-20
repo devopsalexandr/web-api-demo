@@ -12,4 +12,5 @@ interface IUserService
 
     public function deleteUserById(int $id): ?bool;
 
+    public function addBooksToUser(int $user_id, array $book_id): void;
 }

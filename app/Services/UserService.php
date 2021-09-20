@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Contracts\IUserService;
 use App\Http\Requests\Admin\AdminUpdateUserRequest;
 use App\Models\User;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class UserService implements IUserService
@@ -18,9 +19,14 @@ class UserService implements IUserService
         $this->user = $user;
     }
 
-    public function addBooksToUser(User $user, $books)
+    public function addBooksToUser(int $user_id, array $books_id): void
     {
-        $user->books()->attach($books);
+        $user = $this->findUserById($user_id);
+
+        $books = Book::findMany($books_id);
+
+        if($user)
+            $user->books()->attach($books);
     }
 
     public function updateUserById(int $user_id, array $data): bool

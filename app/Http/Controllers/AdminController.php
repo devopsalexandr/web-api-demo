@@ -6,9 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Contracts\IBookService;
 use App\Contracts\IUserService;
+use App\Http\Requests\Admin\AdminAddBookRequest;
 use App\Http\Requests\Admin\AdminCreateUserRequest;
+use App\Http\Requests\Admin\AdminUpdateBookRequest;
 use App\Http\Requests\Admin\AdminUpdateUserRequest;
-use App\Http\Requests\AdminAddBookRequest;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\UserResource;
 use App\Models\Book;
@@ -79,9 +80,11 @@ class AdminController extends Controller
         return $this->responseFactory->json(new BookResource($book), 201);
     }
 
-    public function updateBook()
+    public function updateBook(AdminUpdateBookRequest $request)
     {
-        //
+        $this->bookService->updateBookById((int) $request->book_id, $request->all());
+
+        return $this->responseFactory->json(null, 201);
     }
 
     public function deleteBook(Request $request): JsonResponse

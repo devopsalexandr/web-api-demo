@@ -27,4 +27,14 @@ class BookService implements IBookService
 
         return $user->delete();
     }
+
+    public function updateBookById(int $book_id, array $data): bool
+    {
+        $book = $this->findBookById($book_id);
+
+        if(!$book)
+            return false;
+
+        return $book->update($data);
+    }
 }

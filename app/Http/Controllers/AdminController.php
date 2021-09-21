@@ -18,6 +18,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Nexmo\Laravel\Facade\Nexmo;
 
 class AdminController extends Controller
 {
@@ -62,7 +63,12 @@ class AdminController extends Controller
 
         if($deleted){
             // notify user by sms
-            //$this->smsService->sendSms("phone number", $text)
+            Nexmo::message()->send([
+                'to'   => '48111222333',
+//                'to'   => $this->user->phoneNumber, // user phone nember
+                'from' => '48111222333', // Your authorize phone number
+                'text' => 'Your account has been deleted'
+            ]);
             return $this->responseFactory->json(null, 200);
         }
 

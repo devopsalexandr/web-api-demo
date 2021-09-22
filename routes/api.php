@@ -24,4 +24,6 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
         Route::get('/books', [\App\Http\Controllers\UserBooksController::class, 'index']);
     });
+
+    Route::get('/book/search', [\App\Http\Controllers\SearchBooksController::class, 'index']);
 });
